@@ -1,40 +1,44 @@
 # 🎓 Campus EventHub – College Event Management System
 
-Campus EventHub is a full-stack web application built to manage college events efficiently.  
-It supports **student registrations**, **admin event management**, **mock payments**, and **automatic certificate generation**.
+Campus EventHub is a full-stack web application designed to manage college events efficiently.  
+It provides role-based access for **students** and **admins**, supports **event registration**, **mock payments**, and **automatic certificate generation**.
+
+This project was built as a **college mini-project** and also serves as a **portfolio showcase**.
 
 ---
 
 ## 🚀 Features
 
-### 👨‍🎓 Student
+### 👨‍🎓 Student Module
 - Student registration & login
-- View upcoming events
-- Register for free & paid events (mock payment)
+- View upcoming and ongoing events
+- Register for free and paid events (mock payment)
 - View registered events
-- Download certificates (PDF)
-- Clean dashboard with modern UI
+- Download participation certificates (PDF)
+- Clean, responsive student dashboard
 
-### 👨‍💼 Admin
+### 👨‍💼 Admin Module
 - Admin login
-- Create, edit, delete events
+- Create, edit, and delete events
+- Manage all events from admin dashboard
 - Mark events as completed
-- Generate certificates for completed events
-- Professional admin dashboard
+- Generate certificates for all registered students
+- Scalable admin dashboard design
 
 ---
 
-## 💳 Payment Module
-- Mock payment system (UPI / Card / Wallet)
-- Gateway-agnostic architecture
-- Can be replaced with Razorpay/Stripe in production
+## 💳 Payment System
+- Mock payment flow (Card / UPI / Wallet)
+- Designed to be **gateway-agnostic**
+- Can be easily replaced with real payment gateways like Razorpay or Stripe in the future
 
 ---
 
-## 🎓 Certificate System
-- Auto-generated PDF certificates
-- Student name + event name
+## 🎓 Certificate Generation
+- Automatic PDF certificate generation
+- Includes student name and event title
 - Downloadable after event completion
+- Implemented using ReportLab
 
 ---
 
@@ -43,27 +47,57 @@ It supports **student registrations**, **admin event management**, **mock paymen
 - **Frontend:** HTML, Bootstrap 5
 - **Database:** SQLite
 - **PDF Generation:** ReportLab
-- **Icons:** Font Awesome
+- **Icons & UI:** Font Awesome, Bootstrap Components
 
 ---
 
 ## 📸 Screenshots
-(Add screenshots here)
-- Student Dashboard
-- Admin Dashboard
-- Events Page
-- Certificate PDF
+
+### Student Dashboard
+![Student Dashboard](screenshots/student-dashboard.png)
+
+### Admin Dashboard
+![Admin Dashboard](screenshots/admin-dashboard.png)
+
+### Admin – Manage Events
+![Admin Manage Events](screenshots/admin-manage-events.png)
+
+### Certificate (PDF)
+![Certificate](screenshots/certificate.png)
 
 ---
 
 ## 🔮 Future Enhancements
-- Real payment gateway integration
-- Event analytics dashboard
-- Email notifications
-- Multi-college support
+
+The following features can be added to improve scalability and real-world usability:
+
+- 🎨 Enhanced certificate design with:
+  - College logo
+  - Custom fonts
+  - Background templates
+- 💳 Integration with real payment gateways (Razorpay / Stripe)
+- 📊 Admin analytics dashboard:
+  - Event participation stats
+  - Revenue tracking
+- 📧 Email notifications:
+  - Event registration confirmation
+  - Certificate availability alerts
+- 🏫 Multi-college support
+- 🔐 Role-based permissions for event coordinators
+- 📱 Improved mobile responsiveness
+- 🔍 Advanced event search & filters
+
+---
+
+## 📌 Project Highlights
+- Role-based authentication (Student / Admin)
+- End-to-end event lifecycle management
+- Clean UI with reusable components
+- Real-world workflow simulation
+- Portfolio-ready full-stack project
 
 ---
 
 ## 👤 Author
 **Sathvik Yadav**  
-Built as a college mini-project and portfolio showcase.
+Built as a college mini-project and portfolio application.
