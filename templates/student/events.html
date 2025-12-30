@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Events | Campus EventHub{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Available Events</h2>
+
+<table class="table table-bordered table-hover bg-white">
+    <thead class="table-dark">
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Date</th>
+            <th>Venue</th>
+            <th>Type</th>
+            <th>Fee</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+    {% for event in events %}
+        <tr>
+            <td>{{ event["title"] }}</td>
+            <td>{{ event["description"] }}</td>
+            <td>{{ event["date"] }}</td>
+            <td>{{ event["venue"] }}</td>
+
+            <td>
+                {% if event["is_paid"] == 1 %}
+                    <span class="badge bg-warning text-dark">Paid</span>
+                {% else %}
+                    <span class="badge bg-success">Free</span>
+                {% endif %}
+            </td>
+
+            <td>₹{{ event["fee"] }}</td>
+
+            <td>
+                {% if event["status"] == "completed" %}
+                    <span class="badge bg-secondary">Completed</span>
+                {% else %}
+                    <a href="{{ url_for('register_event', event_id=event['id']) }}"
+                       class="btn btn-sm btn-primary">
+                        Register
+                    </a>
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<a href="{{ url_for('student_dashboard') }}" class="btn btn-secondary">
+    Back to Dashboard
+</a>
+{% endblock %}

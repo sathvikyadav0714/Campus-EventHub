@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Events | Campus EventHub</title>
+</head>
+<body>
+    <h2>My Registered Events</h2>
+
+    {% if events %}
+    <table border="1" cellpadding="8">
+        <tr>
+            <th>Event Title</th>
+            <th>Date</th>
+            <th>Venue</th>
+            <th>Type</th>
+        </tr>
+
+        {% for event in events %}
+        <tr>
+            <td>{{ event["title"] }}</td>
+            <td>{{ event["date"] }}</td>
+            <td>{{ event["venue"] }}</td>
+            <td>
+                {% if event["is_paid"] == 1 %}
+                    Paid
+                {% else %}
+                    Free
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+        <p>You have not registered for any events yet.</p>
+    {% endif %}
+
+    <br>
+    <a href="{{ url_for('student_dashboard') }}">Back to Dashboard</a>
+</body>
+</html>
+
+
+
+{% endblock %}

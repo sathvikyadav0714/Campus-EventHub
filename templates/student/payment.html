@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payment | Campus EventHub</title>
+</head>
+<body>
+    <h2>Event Payment</h2>
+
+    <p><strong>Event:</strong> {{ event["title"] }}</p>
+    <p><strong>Amount:</strong> ₹{{ event["fee"] }}</p>
+
+    <form method="POST">
+        <button type="submit">Pay Now (Test Mode)</button>
+    </form>
+
+    <br>
+    <a href="{{ url_for('student_events') }}">Cancel</a>
+</body>
+</html>
+
+
+
+
+
+{% endblock %}

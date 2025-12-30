@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Student Register | Campus EventHub{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h3 class="text-center mb-4">Student Registration</h3>
+
+                <form method="POST">
+                    <div class="mb-3">
+                        <label class="form-label">Name</label>
+                        <input type="text" name="name" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Roll Number</label>
+                        <input type="text" name="roll_no" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" name="email" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Department</label>
+                        <input type="text" name="department" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input type="password" name="password" class="form-control" required>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-success">
+                            Register
+                        </button>
+                    </div>
+                </form>
+
+                <p class="text-center mt-3">
+                    Already registered?
+                    <a href="{{ url_for('student_login') }}">Login</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

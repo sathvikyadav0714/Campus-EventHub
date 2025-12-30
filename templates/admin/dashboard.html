@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard | Campus EventHub{% endblock %}
+
+{% block content %}
+
+<div class="mb-4">
+    <h2>Admin Dashboard 👨‍💼</h2>
+    <p class="text-muted">Manage events, registrations, and certificates</p>
+</div>
+
+<div class="row g-4">
+
+    <!-- Manage Events -->
+    <div class="col-md-4">
+        <div class="card shadow-sm h-100 border-primary">
+            <div class="card-body text-center">
+                <h5 class="card-title"> <i class="fa-solid fa-calendar-check text-primary"></i> Manage Events </h5>
+
+                <p class="card-text">View, edit, complete, or delete events.</p>
+                <a href="{{ url_for('admin_events') }}" class="btn btn-primary">
+                    Manage
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Event -->
+    <div class="col-md-4">
+        <div class="card shadow-sm h-100 border-success">
+            <div class="card-body text-center">
+                <h5 class="card-title"> <i class="fa-solid fa-plus-circle text-success"></i> Create Event </h5>
+
+                <p class="card-text">Add a new event for students.</p>
+                <a href="{{ url_for('create_event') }}" class="btn btn-success">
+                    Create
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Generate Certificates -->
+    <div class="col-md-4">
+        <div class="card shadow-sm h-100 border-warning">
+            <div class="card-body text-center">
+                <h5 class="card-title"> <i class="fa-solid fa-award text-warning"></i> Certificates </h5>
+
+                <p class="card-text">Generate certificates for completed events.</p>
+                <a href="{{ url_for('admin_events') }}" class="btn btn-warning">
+                    Go
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Registrations (Future-ready) -->
+    <div class="col-md-6">
+        <div class="card shadow-sm h-100 border-info">
+            <div class="card-body text-center">
+                <h5 class="card-title"> <i class="fa-solid fa-users text-info"></i> Registrations </h5>
+
+                <p class="card-text">
+                    View student registrations per event.
+                </p>
+                <button class="btn btn-outline-info" disabled>
+                    Coming Soon
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Analytics (Future-ready) -->
+    <div class="col-md-6">
+        <div class="card shadow-sm h-100 border-dark">
+            <div class="card-body text-center">
+                <h5 class="card-title"> <i class="fa-solid fa-chart-line text-dark"></i> Analytics </h5>
+
+                <p class="card-text">
+                    Event stats, revenue, and participation insights.
+                </p>
+                <button class="btn btn-outline-dark" disabled>
+                    Coming Soon
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

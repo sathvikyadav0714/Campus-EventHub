@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Certificates | Campus EventHub</title>
+</head>
+<body>
+    <h2>My Certificates</h2>
+
+    {% if certificates %}
+        <table border="1" cellpadding="8">
+            <tr>
+                <th>Event</th>
+                <th>Certificate</th>
+            </tr>
+
+            {% for cert in certificates %}
+            <tr>
+                <td>{{ cert["title"] }}</td>
+                <td>
+                    <a href="{{ url_for('static', filename='certificates/' + cert['filename']) }}" target="_blank">
+                        Download
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No certificates available yet.</p>
+    {% endif %}
+
+    <br>
+    <a href="{{ url_for('student_dashboard') }}">Back to Dashboard</a>
+</body>
+</html>
+
+
+{% endblock %}
