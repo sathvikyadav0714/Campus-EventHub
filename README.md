@@ -77,7 +77,7 @@ The following features can be added to improve scalability and real-world usabil
   - Background templates
 - 💳 Integration with real payment gateways (Razorpay / Stripe)
 - 📊 Admin analytics dashboard:
-  - Event participation stats
+  - Event participation statistics
   - Revenue tracking
 - 📧 Email notifications:
   - Event registration confirmation
@@ -96,8 +96,8 @@ The following features can be added to improve scalability and real-world usabil
 - Real-world workflow simulation
 - Portfolio-ready full-stack project
 
+---
 
-▶️ How to Run the Project Locally
 ## ▶️ How to Run the Project Locally
 
 Follow these steps to run the Campus EventHub project on your local machine.
@@ -106,6 +106,7 @@ Follow these steps to run the Campus EventHub project on your local machine.
 ```bash
 git clone https://github.com/sathvikyadav0714/Campus-EventHub.git
 cd Campus-EventHub
+
 
 2️⃣ Create a Virtual Environment
 python -m venv venv
@@ -129,16 +130,3 @@ python app.py
 
 6️⃣ Open the Application in Browser
 http://127.0.0.1:5000
-
-
-🔐 Default Access
-
-Students: Can register using the signup page
-
-Admin: Login credentials are created during initial setup in the database
-
----
-
-## 👤 Author
-**Sathvik Yadav**  
-Built as a college mini-project and portfolio application.
