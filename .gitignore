@@ -1,3 +1,4 @@
+static/certificates/
 venv/
 database.db
 __pycache__/
