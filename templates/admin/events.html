@@ -1,10 +1,23 @@
 {% extends "base.html" %}
+{% block title %}Manage Events | Campus EventHub{% endblock %}
+
 {% block content %}
 
-<h2 class="mb-4">Manage Events</h2>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h2 class="mb-1">📋 Manage Events</h2>
+        <p class="text-muted mb-0">
+            Create, update, complete, or delete college events
+        </p>
+    </div>
 
-<table class="table table-bordered table-hover bg-white">
-    <thead class="table-dark">
+    <a href="{{ url_for('create_event') }}" class="btn btn-primary">
+        <i class="fa-solid fa-plus"></i> Create Event
+    </a>
+</div>
+
+<table class="table table-bordered table-hover bg-white align-middle">
+    <thead class="table-dark text-center">
         <tr>
             <th>Title</th>
             <th>Department</th>
@@ -13,19 +26,20 @@
             <th>Type</th>
             <th>Fee</th>
             <th>Status</th>
-            <th>Action</th>
+            <th>Actions</th>
         </tr>
     </thead>
 
     <tbody>
     {% for event in events %}
         <tr>
-            <td>{{ event["title"] }}</td>
+            <td class="fw-semibold">{{ event["title"] }}</td>
             <td>{{ event["department"] }}</td>
             <td>{{ event["date"] }}</td>
             <td>{{ event["venue"] }}</td>
 
-            <td>
+            <!-- TYPE -->
+            <td class="text-center">
                 {% if event["is_paid"] == 1 %}
                     <span class="badge bg-warning text-dark">Paid</span>
                 {% else %}
@@ -33,9 +47,17 @@
                 {% endif %}
             </td>
 
-            <td>₹{{ event["fee"] }}</td>
+            <!-- FEE -->
+            <td class="text-center">
+                {% if event["is_paid"] == 1 %}
+                    ₹{{ event["fee"] }}
+                {% else %}
+                    —
+                {% endif %}
+            </td>
 
-            <td>
+            <!-- STATUS -->
+            <td class="text-center">
                 {% if event["status"] == "completed" %}
                     <span class="badge bg-secondary">Completed</span>
                 {% else %}
@@ -43,33 +65,50 @@
                 {% endif %}
             </td>
 
+            <!-- ACTIONS -->
             <td>
-                {% if event["status"] != "completed" %}
-                    <a href="{{ url_for('edit_event', event_id=event['id']) }}"
-                       class="btn btn-sm btn-warning">Edit</a>
+                <div class="d-flex gap-1 flex-wrap justify-content-center">
 
-                    <a href="{{ url_for('complete_event', event_id=event['id']) }}"
-                       class="btn btn-sm btn-success">Complete</a>
+                    {% if event["status"] != "completed" %}
 
-                    <a href="{{ url_for('delete_event', event_id=event['id']) }}"
-                       class="btn btn-sm btn-danger"
-                       onclick="return confirm('Delete this event?');">
-                       Delete
-                    </a>
-                {% else %}
-                    <a href="{{ url_for('generate_certificates', event_id=event['id']) }}"
-                       class="btn btn-sm btn-primary">
-                       Generate Certificates
-                    </a>
-                {% endif %}
+
+                        <a href="{{ url_for('edit_event', event_id=event['id']) }}"
+                           class="btn btn-sm btn-outline-warning">
+                            Edit
+                        </a>
+
+                        <a href="{{ url_for('complete_event', event_id=event['id']) }}"
+                           class="btn btn-sm btn-outline-success">
+                            Complete
+                        </a>
+
+                        <a href="{{ url_for('delete_event', event_id=event['id']) }}"
+                           class="btn btn-sm btn-outline-danger"
+                           onclick="return confirm('Are you sure you want to delete this event?');">
+                           Delete
+                        </a>
+                    {% else %}
+                        <a href="{{ url_for('generate_certificates', event_id=event['id']) }}"
+                           class="btn btn-sm btn-primary">
+                           Generate Certificates
+                        </a>
+                    {% endif %}
+
+                </div>
+            </td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="8" class="text-center text-muted">
+                No events found.
             </td>
         </tr>
     {% endfor %}
     </tbody>
 </table>
 
-<a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">
-    Back to Dashboard
+<a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary mt-3">
+    ← Back to Dashboard
 </a>
 
 {% endblock %}

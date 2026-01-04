@@ -1,48 +1,88 @@
 {% extends "base.html" %}
+{% block title %}Create Event | Campus EventHub{% endblock %}
+
 {% block content %}
 
+<div class="row justify-content-center">
+    <div class="col-md-8">
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Create Event | Campus EventHub</title>
-</head>
-<body>
-    <h2>Create New Event</h2>
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark text-light">
+                <h4 class="mb-0">
+                    <i class="fa-solid fa-plus"></i> Create New Event
+                </h4>
+            </div>
 
-    <form method="POST">
-        <label>Event Title:</label><br>
-        <input type="text" name="title" required><br><br>
+            <div class="card-body">
 
-        <label>Description:</label><br>
-        <textarea name="description" required></textarea><br><br>
+                <form method="POST">
 
-        <label>Department:</label><br>
-        <input type="text" name="department" placeholder="CSE / ECE / ALL" required><br><br>
+                    <!-- EVENT TITLE -->
+                    <div class="mb-3">
+                        <label class="form-label">Event Title</label>
+                        <input type="text" name="title" class="form-control" required>
+                    </div>
 
-        <label>Date:</label><br>
-        <input type="date" name="date" required><br><br>
+                    <!-- DESCRIPTION -->
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea name="description" class="form-control" rows="3" required></textarea>
+                    </div>
 
-        <label>Venue:</label><br>
-        <input type="text" name="venue" required><br><br>
+                    <!-- DEPARTMENT -->
+                    <div class="mb-3">
+                        <label class="form-label">Department</label>
+                        <input type="text" name="department"
+                               class="form-control"
+                               placeholder="CSE / ECE / ALL"
+                               required>
+                    </div>
 
-        <label>Is Paid Event?</label><br>
-        <select name="is_paid">
-            <option value="no">No</option>
-            <option value="yes">Yes</option>
-        </select><br><br>
+                    <!-- DATE & VENUE -->
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Event Date</label>
+                            <input type="date" name="date" class="form-control" required>
+                        </div>
 
-        <label>Fee (₹):</label><br>
-        <input type="number" name="fee" value="0"><br><br>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Venue</label>
+                            <input type="text" name="venue" class="form-control" required>
+                        </div>
+                    </div>
 
-        <button type="submit">Create Event</button>
-    </form>
+                    <!-- PAID EVENT -->
+                    <div class="mb-3">
+                        <label class="form-label">Event Type</label>
+                        <select name="is_paid" class="form-select">
+                            <option value="no">Free Event</option>
+                            <option value="yes">Paid Event</option>
+                        </select>
+                    </div>
 
-    <br>
-    <a href="{{ url_for('admin_dashboard') }}">Back to Dashboard</a>
-</body>
-</html>
+                    <!-- FEE -->
+                    <div class="mb-4">
+                        <label class="form-label">Event Fee (₹)</label>
+                        <input type="number" name="fee" class="form-control" value="0" min="0">
+                    </div>
 
+                    <!-- ACTION BUTTONS -->
+                    <div class="d-flex justify-content-between">
+                        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">
+                            ← Back
+                        </a>
 
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa-solid fa-check"></i> Create Event
+                        </button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>
 
 {% endblock %}

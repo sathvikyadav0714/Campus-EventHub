@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Event Registrations{% endblock %}
+
+{% block content %}
+
+<h2 class="mb-3">
+    👥 Registrations – {{ event["title"] }}
+</h2>
+
+{% if registrations %}
+
+<table class="table table-bordered table-hover bg-white">
+    <thead class="table-dark">
+        <tr>
+            <th>Student Name</th>
+            <th>Email</th>
+            <th>Payment Method</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for r in registrations %}
+        <tr>
+            <td>{{ r["name"] }}</td>
+            <td>{{ r["email"] }}</td>
+            <td>
+                {% if r["payment_method"] %}
+                    {{ r["payment_method"] }}
+                {% else %}
+                    Free
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{% else %}
+<div class="alert alert-info">
+    No students have registered yet.
+</div>
+{% endif %}
+
+<a href="{{ url_for('admin_events') }}" class="btn btn-secondary mt-3">
+    ← Back to Events
+</a>
+
+{% endblock %}

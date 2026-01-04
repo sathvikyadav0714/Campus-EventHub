@@ -1,48 +1,67 @@
 {% extends "base.html" %}
+{% block title %}My Events | Campus EventHub{% endblock %}
+
 {% block content %}
 
+<div class="mb-4">
+    <h2 class="mb-1">📌 My Registered Events</h2>
+    <p class="text-muted">
+        Events you have registered for
+    </p>
+</div>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>My Events | Campus EventHub</title>
-</head>
-<body>
-    <h2>My Registered Events</h2>
+{% if events %}
 
-    {% if events %}
-    <table border="1" cellpadding="8">
+<table class="table table-bordered table-hover bg-white align-middle">
+    <thead class="table-dark text-center">
         <tr>
-            <th>Event Title</th>
+            <th>Event</th>
             <th>Date</th>
             <th>Venue</th>
             <th>Type</th>
+            <th>Status</th>
         </tr>
+    </thead>
 
-        {% for event in events %}
+    <tbody>
+    {% for event in events %}
         <tr>
-            <td>{{ event["title"] }}</td>
-            <td>{{ event["date"] }}</td>
+            <td class="fw-semibold">{{ event["title"] }}</td>
+            <td class="text-center">{{ event["date"] }}</td>
             <td>{{ event["venue"] }}</td>
-            <td>
+
+            <!-- TYPE -->
+            <td class="text-center">
                 {% if event["is_paid"] == 1 %}
-                    Paid
+                    <span class="badge bg-warning text-dark">Paid</span>
                 {% else %}
-                    Free
+                    <span class="badge bg-success">Free</span>
+                {% endif %}
+            </td>
+
+            <!-- STATUS -->
+            <td class="text-center">
+                {% if event["status"] == "completed" %}
+                    <span class="badge bg-secondary">Completed</span>
+                {% else %}
+                    <span class="badge bg-primary">Upcoming</span>
                 {% endif %}
             </td>
         </tr>
-        {% endfor %}
-    </table>
-    {% else %}
-        <p>You have not registered for any events yet.</p>
-    {% endif %}
+    {% endfor %}
+    </tbody>
+</table>
 
-    <br>
-    <a href="{{ url_for('student_dashboard') }}">Back to Dashboard</a>
-</body>
-</html>
+{% else %}
 
+<div class="alert alert-info text-center">
+    You have not registered for any events yet.
+</div>
 
+{% endif %}
+
+<a href="{{ url_for('student_dashboard') }}" class="btn btn-secondary mt-3">
+    ← Back to Dashboard
+</a>
 
 {% endblock %}

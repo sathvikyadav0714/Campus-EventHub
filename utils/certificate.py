@@ -1,51 +1,60 @@
-from reportlab.lib.pagesizes import A4
+from reportlab.lib.pagesizes import landscape, A4
 from reportlab.pdfgen import canvas
-import os
+from reportlab.lib.colors import black
+from datetime import datetime
 
 def generate_certificate(student_name, event_title, output_path):
-    c = canvas.Canvas(output_path, pagesize=A4)
-    width, height = A4
+    c = canvas.Canvas(output_path, pagesize=landscape(A4))
+    width, height = landscape(A4)
+
+    # Background
+    c.setFillColorRGB(1, 1, 1)  # white
+    c.rect(0, 0, width, height, fill=1)
+
+    # ALWAYS reset text color
+    c.setFillColor(black)
 
     # Title
-    c.setFont("Helvetica-Bold", 28)
-    c.drawCentredString(width / 2, height - 150, "CERTIFICATE OF PARTICIPATION")
+    c.setFont("Helvetica-Bold", 36)
+    c.drawString(60, height - 90, "CERTIFICATE")
+    c.drawString(60, height - 135, "OF PARTICIPATION")
 
-    # Body text
+    # Divider line
+    c.setLineWidth(2)
+    c.line(60, height - 155, width - 60, height - 155)
+
+    # Intro
     c.setFont("Helvetica", 16)
-    c.drawCentredString(
-        width / 2,
-        height - 250,
-        f"This is to certify that"
-    )
+    c.drawString(60, height - 220, "This certificate is proudly presented to")
 
-    # Student name
+    # Student Name
+    c.setFont("Helvetica-Bold", 30)
+    c.drawString(60, height - 270, student_name)
+
+    # Name divider
+    c.setLineWidth(1.5)
+    c.line(60, height - 290, width - 60, height - 290)
+
+    # Description
+    c.setFont("Helvetica", 16)
+    c.drawString(60, height - 340, "For active participation in the event")
+
+    # Event Name
     c.setFont("Helvetica-Bold", 20)
-    c.drawCentredString(
-        width / 2,
-        height - 300,
-        student_name
-    )
+    c.drawString(60, height - 380, f"“{event_title}”")
 
-    # Event text
-    c.setFont("Helvetica", 16)
-    c.drawCentredString(
-        width / 2,
-        height - 360,
-        f"has successfully participated in the event"
-    )
+    # Organizer
+    c.setFont("Helvetica", 14)
+    c.drawString(60, height - 420, "Conducted by Campus EventHub")
 
-    # Event title
-    c.setFont("Helvetica-Bold", 18)
-    c.drawCentredString(
-        width / 2,
-        height - 410,
-        event_title
-    )
-
-    # Footer
+    # Signature
+    c.setLineWidth(1)
+    c.line(60, 110, 240, 110)
     c.setFont("Helvetica", 12)
-    c.drawString(50, 100, "Campus EventHub")
-    c.drawRightString(width - 50, 100, "Authorized Signature")
+    c.drawString(60, 90, "Authorized Signature")
 
-    c.showPage()
+    # Date
+    date_str = datetime.now().strftime("%B %d, %Y")
+    c.drawRightString(width - 60, 90, date_str)
+
     c.save()

@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Event Registrations | Campus EventHub{% endblock %}
+
+{% block content %}
+
+<div class="mb-4">
+    <h2 class="mb-1">📊 Event-wise Registrations</h2>
+    <p class="text-muted">
+        View registration count for each event and drill down to student details
+    </p>
+</div>
+
+<table class="table table-bordered table-hover bg-white align-middle">
+    <thead class="table-dark text-center">
+        <tr>
+            <th>Event</th>
+            <th>Date</th>
+            <th>Total Registrations</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+    {% for event in events %}
+        <tr>
+            <td class="fw-semibold">{{ event["title"] }}</td>
+            <td class="text-center">{{ event["date"] }}</td>
+            <td class="text-center">
+                <span class="badge bg-primary">
+                    {{ event["total_registrations"] }}
+                </span>
+            </td>
+            <td class="text-center">
+                <a href="{{ url_for('view_registrations', event_id=event['id']) }}"
+                   class="btn btn-sm btn-outline-info">
+                   View Students
+                </a>
+            </td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="4" class="text-center text-muted">
+                No events found.
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary mt-3">
+    ← Back to Dashboard
+</a>
+
+{% endblock %}
