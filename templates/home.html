@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}Welcome | Campus EventHub{% endblock %}
+
+{% block content %}
+
+<!-- HERO SECTION -->
+<section class="text-center py-5">
+    <h1 class="display-5 fw-bold mb-3">🎓 Campus EventHub</h1>
+    <p class="lead mb-4">
+        Manage, participate, and certify college events — all in one place.
+    </p>
+
+    <div class="d-flex justify-content-center gap-3 flex-wrap">
+        <a href="{{ url_for('student_login') }}" class="btn btn-primary btn-lg">
+            Student Login
+        </a>
+        <a href="{{ url_for('student_register') }}" class="btn btn-success btn-lg">
+            Student Register
+        </a>
+        <a href="{{ url_for('admin_login') }}" class="btn btn-dark btn-lg">
+            Admin Login
+        </a>
+    </div>
+</section>
+
+<hr class="my-5">
+
+<!-- ABOUT SECTION -->
+<section class="text-center mb-5">
+    <h2 class="mb-4">About Campus EventHub</h2>
+    <p class="text-muted mx-auto" style="max-width: 700px;">
+        Campus EventHub is a college event management system designed to simplify
+        event participation for students and event management for administrators.
+        From registrations to certificate generation, everything is handled in one place.
+    </p>
+</section>
+
+<!-- FEATURES SECTION -->
+<section class="row text-center g-4 mb-5">
+
+    <div class="col-md-4">
+        <div class="card h-100 p-4">
+            <i class="fa-solid fa-calendar-check fa-2x text-primary mb-3"></i>
+            <h5>Event Management</h5>
+            <p class="text-muted">
+                Create, manage, and track college events efficiently with admin controls.
+            </p>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card h-100 p-4">
+            <i class="fa-solid fa-credit-card fa-2x text-success mb-3"></i>
+            <h5>Mock Payments</h5>
+            <p class="text-muted">
+                Register for paid or free events using a gateway-ready mock payment system.
+            </p>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card h-100 p-4">
+            <i class="fa-solid fa-certificate fa-2x text-warning mb-3"></i>
+            <h5>Auto Certificates</h5>
+            <p class="text-muted">
+                Automatically generate and download participation certificates in PDF format.
+            </p>
+        </div>
+    </div>
+
+</section>
+
+{% endblock %}

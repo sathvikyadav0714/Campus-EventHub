@@ -5,6 +5,8 @@ from werkzeug.security import check_password_hash
 import uuid
 from utils.certificate import generate_certificate
 import os
+from datetime import datetime
+from flask import flash
 
 
 
@@ -129,7 +131,8 @@ def migrate_events_status():
 # ✅ HOME ROUTE (THIS IS "/" ROUTE)
 @app.route("/")
 def home():
-    return "Campus EventHub – Database connected!"
+    return render_template("home.html")
+
 
 
 # ✅ ADD THIS ROUTE **HERE**
@@ -194,7 +197,37 @@ def student_dashboard():
     if "student_id" not in session:
         return redirect(url_for("student_login"))
 
-    return render_template("student/dashboard.html")
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    # Total available events
+    cur.execute("SELECT COUNT(*) FROM events WHERE status != 'completed'")
+    total_events = cur.fetchone()[0]
+
+    # Events registered by student
+    cur.execute("""
+        SELECT COUNT(*) FROM registrations
+        WHERE student_id = ?
+    """, (session["student_id"],))
+    my_events = cur.fetchone()[0]
+
+    # Certificates earned
+    cur.execute("""
+        SELECT COUNT(*) FROM registrations r
+        JOIN events e ON r.event_id = e.id
+        WHERE r.student_id = ? AND e.status = 'completed'
+    """, (session["student_id"],))
+    certificates = cur.fetchone()[0]
+
+    conn.close()
+
+    return render_template(
+        "student/dashboard.html",
+        total_events=total_events,
+        my_events=my_events,
+        certificates=certificates
+    )
+
 
 
 # Student events route
@@ -399,7 +432,33 @@ def admin_dashboard():
     if "admin_id" not in session:
         return redirect(url_for("admin_login"))
 
-    return render_template("admin/dashboard.html")
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    # Total events
+    cur.execute("SELECT COUNT(*) FROM events")
+    total_events = cur.fetchone()[0]
+
+    # Total registrations
+    cur.execute("SELECT COUNT(*) FROM registrations")
+    total_registrations = cur.fetchone()[0]
+
+    # Certificates generated (completed events registrations)
+    cur.execute("""
+        SELECT COUNT(*) FROM registrations r
+        JOIN events e ON r.event_id = e.id
+        WHERE e.status = 'completed'
+    """)
+    certificates_generated = cur.fetchone()[0]
+
+    conn.close()
+
+    return render_template(
+        "admin/dashboard.html",
+        total_events=total_events,
+        total_registrations=total_registrations,
+        certificates_generated=certificates_generated
+    )
 
 # Admin logout route
 @app.route("/admin/logout")
@@ -418,10 +477,18 @@ def create_event():
         title = request.form["title"]
         description = request.form["description"]
         department = request.form["department"]
-        date = request.form["date"]
+        date_str = request.form["date"]
         venue = request.form["venue"]
         is_paid = 1 if request.form["is_paid"] == "yes" else 0
         fee = request.form["fee"] if is_paid else 0
+
+        # 🔴 DATE VALIDATION
+        event_date = datetime.strptime(date_str, "%Y-%m-%d").date()
+        today = datetime.today().date()
+
+        if event_date < today:
+            flash("Event date cannot be in the past.", "danger")
+            return redirect(url_for("create_event"))
 
         conn = get_db_connection()
         cur = conn.cursor()
@@ -429,14 +496,17 @@ def create_event():
         cur.execute("""
             INSERT INTO events (title, description, department, date, venue, is_paid, fee)
             VALUES (?, ?, ?, ?, ?, ?, ?)
-        """, (title, description, department, date, venue, is_paid, fee))
+        """, (title, description, department, date_str, venue, is_paid, fee))
 
         conn.commit()
         conn.close()
 
-        return "Event created successfully!"
+        flash("Event created successfully!", "success")
+        return redirect(url_for("admin_events"))
 
     return render_template("admin/create_event.html")
+
+
 
 
 #✅ admin events management route
@@ -454,8 +524,67 @@ def admin_events():
     return render_template("admin/events.html", events=events)
 
 
+#add view registrations route
+@app.route("/admin/event/<int:event_id>/registrations")
+def view_registrations(event_id):
+    if "admin_id" not in session:
+        return redirect(url_for("admin_login"))
+
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    # Event details
+    cur.execute("SELECT title FROM events WHERE id = ?", (event_id,))
+    event = cur.fetchone()
+
+    # Registered students
+    cur.execute("""
+        SELECT s.name, s.email,
+               r.payment_method
+        FROM registrations r
+        JOIN students s ON r.student_id = s.id
+        WHERE r.event_id = ?
+    """, (event_id,))
+
+    registrations = cur.fetchall()
+    conn.close()
+
+    return render_template(
+        "admin/view_registrations.html",
+        event=event,
+        registrations=registrations
+    )
+
+#✅ admin registrations summary route
+@app.route("/admin/registrations")
+def admin_registrations():
+    if "admin_id" not in session:
+        return redirect(url_for("admin_login"))
+
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    # Fetch events with registration count
+    cur.execute("""
+        SELECT e.id, e.title, e.date, COUNT(r.id) AS total_registrations
+        FROM events e
+        LEFT JOIN registrations r ON e.id = r.event_id
+        GROUP BY e.id
+        ORDER BY e.date DESC
+    """)
+
+    events = cur.fetchall()
+    conn.close()
+
+    return render_template(
+        "admin/event_registrations.html",
+        events=events
+    )
+
+
 
 #✅ admin complete event route
+
 @app.route("/admin/complete-event/<int:event_id>")
 def complete_event(event_id):
     if "admin_id" not in session:
@@ -464,6 +593,31 @@ def complete_event(event_id):
     conn = get_db_connection()
     cur = conn.cursor()
 
+    # Get event date & status
+    cur.execute("SELECT date, status FROM events WHERE id = ?", (event_id,))
+    event = cur.fetchone()
+
+    if not event:
+        conn.close()
+        flash("Event not found.", "danger")
+        return redirect(url_for("admin_events"))
+
+    event_date = datetime.strptime(event["date"], "%Y-%m-%d").date()
+    today = datetime.today().date()
+
+    # 🔴 BLOCK early completion
+    if event_date > today:
+        conn.close()
+        flash("You cannot complete an event before its scheduled date.", "warning")
+        return redirect(url_for("admin_events"))
+
+    # 🔴 Prevent double completion
+    if event["status"] == "completed":
+        conn.close()
+        flash("Event is already marked as completed.", "info")
+        return redirect(url_for("admin_events"))
+
+    # ✅ Mark event as completed
     cur.execute("""
         UPDATE events
         SET status = 'completed'
@@ -473,8 +627,8 @@ def complete_event(event_id):
     conn.commit()
     conn.close()
 
+    flash("Event marked as completed successfully!", "success")
     return redirect(url_for("admin_events"))
-
 
 
 

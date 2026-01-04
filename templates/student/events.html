@@ -2,10 +2,18 @@
 {% block title %}Events | Campus EventHub{% endblock %}
 
 {% block content %}
-<h2 class="mb-4">Available Events</h2>
 
-<table class="table table-bordered table-hover bg-white">
-    <thead class="table-dark">
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h2 class="mb-1">📅 Available Events</h2>
+        <p class="text-muted mb-0">
+            Explore upcoming college events and register to participate
+        </p>
+    </div>
+</div>
+
+<table class="table table-bordered table-hover bg-white align-middle">
+    <thead class="table-dark text-center">
         <tr>
             <th>Title</th>
             <th>Description</th>
@@ -13,6 +21,7 @@
             <th>Venue</th>
             <th>Type</th>
             <th>Fee</th>
+            <th>Status</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -20,12 +29,13 @@
     <tbody>
     {% for event in events %}
         <tr>
-            <td>{{ event["title"] }}</td>
+            <td class="fw-semibold">{{ event["title"] }}</td>
             <td>{{ event["description"] }}</td>
             <td>{{ event["date"] }}</td>
             <td>{{ event["venue"] }}</td>
 
-            <td>
+            <!-- EVENT TYPE -->
+            <td class="text-center">
                 {% if event["is_paid"] == 1 %}
                     <span class="badge bg-warning text-dark">Paid</span>
                 {% else %}
@@ -33,24 +43,48 @@
                 {% endif %}
             </td>
 
-            <td>₹{{ event["fee"] }}</td>
+            <!-- EVENT FEE -->
+            <td class="text-center">
+                {% if event["is_paid"] == 1 %}
+                    ₹{{ event["fee"] }}
+                {% else %}
+                    —
+                {% endif %}
+            </td>
 
-            <td>
+            <!-- EVENT STATUS -->
+            <td class="text-center">
                 {% if event["status"] == "completed" %}
                     <span class="badge bg-secondary">Completed</span>
                 {% else %}
+                    <span class="badge bg-primary">Upcoming</span>
+                {% endif %}
+            </td>
+
+            <!-- ACTION -->
+            <td class="text-center">
+                {% if event["status"] != "completed" %}
                     <a href="{{ url_for('register_event', event_id=event['id']) }}"
                        class="btn btn-sm btn-primary">
                         Register
                     </a>
+                {% else %}
+                    <span class="text-muted">Closed</span>
                 {% endif %}
+            </td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="8" class="text-center text-muted">
+                No events available at the moment.
             </td>
         </tr>
     {% endfor %}
     </tbody>
 </table>
 
-<a href="{{ url_for('student_dashboard') }}" class="btn btn-secondary">
-    Back to Dashboard
+<a href="{{ url_for('student_dashboard') }}" class="btn btn-secondary mt-3">
+    ← Back to Dashboard
 </a>
+
 {% endblock %}
