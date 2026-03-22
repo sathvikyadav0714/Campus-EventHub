@@ -131,7 +131,7 @@ def migrate_events_status():
 # ✅ HOME ROUTE (THIS IS "/" ROUTE)
 @app.route("/")
 def home():
-    return "Working"
+    return render_template("home.html")
 
 
 
