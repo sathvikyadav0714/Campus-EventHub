@@ -16,6 +16,11 @@ app.secret_key = "campus_eventhub_secret"
 DB_NAME = "database.db"
 
 
+
+
+
+
+
 def get_db_connection():
     conn = sqlite3.connect(DB_NAME)
     conn.row_factory = sqlite3.Row
@@ -123,6 +128,13 @@ def migrate_events_status():
 
     conn.commit()
     conn.close()
+
+
+
+init_db()
+create_admin()
+migrate_registrations_table()
+migrate_events_status()
 
 
 
