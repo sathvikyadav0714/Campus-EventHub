@@ -1,5 +1,13 @@
 # 🎓 Campus EventHub – College Event Management System
 
+🔗 **Live Demo:** https://campus-eventhub-wxcg.onrender.com/  
+
+🔐 **Demo Credentials**
+- Admin: admin / admin123  
+- Student: testuser@gmail.com / testuser *(or register new)*  
+
+---
+
 Campus EventHub is a full-stack web application designed to manage college events efficiently.  
 It provides role-based access for **Students** and **Admins**, supports **event registrations**, **mock payments**, **event-wise analytics**, and **automatic certificate generation**.
 
